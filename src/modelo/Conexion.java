@@ -4,6 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/*Clase Conexion
+ *Crea una conexion con la base de datos
+ *mediante un patrón singleton
+ * @author LuisMario
+ * @version 1.0
+ */
 public class Conexion {
 private static Connection conexion = null;
 	

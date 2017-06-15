@@ -7,13 +7,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/*Clase ClientDAO
+ * clase donde vamos a realizar una conexion con la base de datos
+ * e implementamos los metodos de la interface IClientDAO
+ * @author LuisMario
+ * @version 1.0
+ */
 public class ClientDAO implements IClientDAO{
 
 	private static Connection conexion = Conexion.getInstance();
 	
+	//metodo que nos devuelve una lista de clientes mediante una consulta con la base de datos
 	@Override
 	public List<Cliente> getListaClientes() {
-
 		List<Cliente> listaClientes = new ArrayList<>();
 		String sql = "SELECT * FROM clientes ORDER BY dni";
 		try {

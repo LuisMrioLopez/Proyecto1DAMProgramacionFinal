@@ -1,5 +1,12 @@
 package modelo;
 
+/*Clase Cliente
+ *Clase del DTO de la tabla Cliente
+ *que crea el constructor y sus 
+ *correspondientes getters y setters
+ * @author LuisMario
+ * @version 1.0
+ */
 public class Cliente {
 	private String dni;
 	private String nombre;

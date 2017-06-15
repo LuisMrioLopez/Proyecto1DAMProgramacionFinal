@@ -1,5 +1,12 @@
 package modelo;
 
+/*Clase Alquiler
+ *Clase del DTO de la tabla Alquiler
+ *que crea el constructor y sus 
+ *correspondientes getters y setters
+ *@author LuisMario
+ *@version 1.0
+ */
 public class Alquiler {
 	private String matricula;
 	private String dni;

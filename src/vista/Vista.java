@@ -5,13 +5,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import controlador.Controlador;
-import modelo.Alquiler;
 import modelo.CarDAO;
 import modelo.ClientDAO;
 import modelo.RentalDAO;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -19,44 +16,41 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JList;
 import java.awt.event.ActionEvent;
-import java.util.Vector;
-
 import javax.swing.border.BevelBorder;
 import javax.swing.JLabel;
-import javax.swing.JScrollBar;
-import javax.swing.border.LineBorder;
-import javax.swing.table.TableModel;
-
 import java.awt.Color;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
 
+/*Clase Vista
+ * Presenta el modelo en un formato adecuado para 
+ * interactuar (mediante una interfaz de usuario)
+ * @author LuisMario
+ * @version 1.0
+ */
 public class Vista extends JFrame {
 
 	private JPanel contentPane;
 	private DefaultListModel lcoches;
 	private DefaultListModel lclientes;
 	private JButton btnAlquilar;
-	private JTable tableAlquileres;
 	private JScrollPane scrollPaneCoches;
 	private JList listCoches;
 	private JScrollPane scrollPaneClientes;
 	private JList listClientes;
 	private JTextField textFieldCochesAlquilados;
-	private JTextField textFieldCochesDisponibles;
 	private JPanel panelRealizarAlquiler;
 	private JPanel panelMostrarAlquileres;
-	private JTable table;
+	private JTable tableAlquileres;
 	private DefaultTableModel modelo;
+	private static CarDAO car;
+	private static ClientDAO client; 
+	private static RentalDAO rental;
 
-	
+	//getters y setters de los componentes del JFrame
 	public JTextField getTextFieldCochesAlquilados() {
 		return textFieldCochesAlquilados;
-	}
-
-	public JTextField getTextFieldCochesDisponibles() {
-		return textFieldCochesDisponibles;
 	}
 
 	public DefaultListModel getLcoches() {
@@ -79,39 +73,38 @@ public class Vista extends JFrame {
 		return listClientes;
 	}
 
-	public JTable getTableAlquileres() {
-		return tableAlquileres;
-	}
 
 	public DefaultListModel getLCoches() {
 		return lcoches;
 	}
 
-	public void setLCoches(DefaultListModel lcoches) {
-		this.lcoches = lcoches;
-	}
-
 	public DefaultListModel getLClientes() {
 		return lclientes;
 	}
-
-	public void setLClientes(DefaultListModel lclientes) {
-		this.lclientes = lclientes;
+	
+	public DefaultTableModel getModelo() {
+		return modelo;
 	}
-
-	/**
+	
+	public JTable getTableAlquileres() {
+		return tableAlquileres;
+	}
+	
+	/*
 	 * Launch the application.
 	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
+					car = new CarDAO();
+					client = new ClientDAO(); 
+					rental = new RentalDAO();
+					
 					Vista frame = new Vista();
 					frame.setVisible(true);
-					
-					CarDAO car = new CarDAO();
-					ClientDAO client = new ClientDAO(); 
-					RentalDAO rental = new RentalDAO();
 					
 					Controlador c = new Controlador(frame, car, client, rental);
 					
@@ -126,9 +119,7 @@ public class Vista extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+	//componentes de la vista
 	public Vista() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 800, 500);
@@ -152,8 +143,8 @@ public class Vista extends JFrame {
 		btnAlquilar.setBounds(136, 371, 89, 23);
 		panelRealizarAlquiler.add(btnAlquilar);
 		
-		JLabel lblCoches = new JLabel("Coches");
-		lblCoches.setBounds(67, 26, 46, 14);
+		JLabel lblCoches = new JLabel("Coches Disponibles");
+		lblCoches.setBounds(36, 26, 120, 14);
 		panelRealizarAlquiler.add(lblCoches);
 		
 		JLabel lblClientes = new JLabel("Clientes");
@@ -168,6 +159,7 @@ public class Vista extends JFrame {
 		
 		listCoches = new JList();
 		scrollPaneCoches.setViewportView(listCoches);
+		
 		lcoches = new DefaultListModel();
 		listCoches.setModel(lcoches);
 		
@@ -177,6 +169,7 @@ public class Vista extends JFrame {
 		
 		listClientes = new JList();
 		scrollPaneClientes.setViewportView(listClientes);
+		
 		lclientes = new DefaultListModel();
 		listClientes.setModel(lclientes);
 		
@@ -187,16 +180,10 @@ public class Vista extends JFrame {
 		panelMostrarAlquileres.setLayout(null);
 		
 		
-		
-		
 		JLabel lblNCochesAlquilados = new JLabel("N\u00BA coches alquilados");
 		lblNCochesAlquilados.setBackground(Color.WHITE);
-		lblNCochesAlquilados.setBounds(72, 359, 133, 14);
+		lblNCochesAlquilados.setBounds(101, 378, 133, 14);
 		panelMostrarAlquileres.add(lblNCochesAlquilados);
-		
-		JLabel lblNCochesDisponibles = new JLabel("N\u00BA coches disponibles");
-		lblNCochesDisponibles.setBounds(72, 402, 133, 14);
-		panelMostrarAlquileres.add(lblNCochesDisponibles);
 		
 		JLabel lblAlquileres = new JLabel("Alquileres");
 		lblAlquileres.setBounds(160, 28, 74, 14);
@@ -204,73 +191,35 @@ public class Vista extends JFrame {
 		
 		textFieldCochesAlquilados = new JTextField();
 		textFieldCochesAlquilados.setEditable(false);
-		textFieldCochesAlquilados.setBounds(215, 356, 86, 20);
+		textFieldCochesAlquilados.setBounds(246, 375, 31, 20);
 		panelMostrarAlquileres.add(textFieldCochesAlquilados);
 		textFieldCochesAlquilados.setColumns(10);
 		
-		textFieldCochesDisponibles = new JTextField();
-		textFieldCochesDisponibles.setEditable(false);
-		textFieldCochesDisponibles.setBounds(215, 399, 86, 20);
-		panelMostrarAlquileres.add(textFieldCochesDisponibles);
-		textFieldCochesDisponibles.setColumns(10);
+		int totalAlquilados = rental.cuentaAlquilados();
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(25, 72, 335, 222);
+		scrollPane.setBounds(20, 70, 342, 277);
 		panelMostrarAlquileres.add(scrollPane);
 		
-		/*DefaultTableModel modelo = new DefaultTableModel();
-		JTable table = new JTable(modelo);
-		//table = new JTable();
-		table.setModel(new DefaultTableModel(
-			null,
-			new String[] {
-				"Matricula", "Dni", "FechaInicio", "FechaFin"
-			}
-		));
-		scrollPane.setViewportView(table);
-		int numCols = table.getModel().getColumnCount();
-
-		Object [] fila = new Object[numCols]; 
-		fila[0] = "unal";
-		fila[1] = "420";
-		fila[2] = "mundo";
-		fila[3] = "mundo";
+		tableAlquileres = new JTable();
+		scrollPane.setViewportView(tableAlquileres);
 		
-		((DefaultTableModel)table.getModel()).addRow(fila);*/
-		
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		
-		
+		//nombres de las columnas
 		String[] titulos ={"Matricula", "Dni", "FechaInicio", "FechaFin"};
-		String filas[] = new String[4] ;
-		
+		String filas[] = new String[4];
 		
         modelo = new DefaultTableModel(null, titulos);
-	
-		//Recorro la lista de la base de datos y añado cada personaje al modelo
-		/*for (Alquiler alquiler : RentalDAO.listaAlquileres()) {
+        tableAlquileres.setModel(modelo);
+        
+		/*cambiamos el codigo del JTable al controlador
+		 * for (Alquiler alquiler : RentalDAO.listaAlquileres()) {
 			
 			filas[0]= alquiler.getMatricula();
 			filas[1]= alquiler.getDni();
 			filas[2]= alquiler.getFechaInicio();
 			filas[3]= alquiler.getFechaFin();
-			modelo.addRow(filas);
-			
+			modelo.addRow(filas)
 		}*/
-		
-		//le aplico el modelo
-		table.setModel(modelo);
-}
-
-	public DefaultTableModel getModelo() {
-		return modelo;
+        
 	}
-
-	public void setModelo(DefaultTableModel modelo) {
-		this.modelo = modelo;
-	}
-
-	
-	
 }
